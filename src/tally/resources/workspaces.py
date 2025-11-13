@@ -32,12 +32,6 @@ class WorkspacesResource:
         Returns:
             PaginatedWorkspaces object containing workspaces and pagination info
 
-        Raises:
-            UnauthorizedError: If the API key is invalid or missing
-            TallyAPIError: If the API returns an error
-            TallyConnectionError: If there's a connection error
-            TallyTimeoutError: If the request times out
-
         Example:
             ```python
             from tally import Tally

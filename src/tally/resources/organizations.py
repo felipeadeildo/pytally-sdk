@@ -29,11 +29,7 @@ class OrganizationsResource:
             List of User objects in the organization
 
         Raises:
-            UnauthorizedError: If the API key is invalid or missing
             NotFoundError: If the organization is not found
-            TallyAPIError: If the API returns an error
-            TallyConnectionError: If there's a connection error
-            TallyTimeoutError: If the request times out
 
         Example:
             ```python
@@ -62,12 +58,8 @@ class OrganizationsResource:
             user_id: The ID of the user to remove from the organization
 
         Raises:
-            UnauthorizedError: If the API key is invalid or missing
             ForbiddenError: If you don't have permission to remove this user
             NotFoundError: If the organization or user is not found
-            TallyAPIError: If the API returns an error
-            TallyConnectionError: If there's a connection error
-            TallyTimeoutError: If the request times out
 
         Example:
             ```python
@@ -92,11 +84,7 @@ class OrganizationsResource:
             List of Invite objects in the organization
 
         Raises:
-            UnauthorizedError: If the API key is invalid or missing
             NotFoundError: If the organization is not found
-            TallyAPIError: If the API returns an error
-            TallyConnectionError: If there's a connection error
-            TallyTimeoutError: If the request times out
 
         Example:
             ```python
@@ -133,13 +121,9 @@ class OrganizationsResource:
                 - List of emails: ["user1@example.com", "user2@example.com"]
 
         Raises:
-            BadRequestError: If the request is malformed or contains invalid parameters
-            UnauthorizedError: If the API key is invalid or missing
+            BadRequestError: If the request contains invalid parameters
             ForbiddenError: If you don't have permission to create invites
             NotFoundError: If the organization or workspaces are not found
-            TallyAPIError: If the API returns an error
-            TallyConnectionError: If there's a connection error
-            TallyTimeoutError: If the request times out
 
         Example:
             ```python
@@ -180,12 +164,8 @@ class OrganizationsResource:
             invite_id: The ID of the invite to cancel
 
         Raises:
-            UnauthorizedError: If the API key is invalid or missing
             ForbiddenError: If you don't have permission to cancel this invite
             NotFoundError: If the organization or invite is not found
-            TallyAPIError: If the API returns an error
-            TallyConnectionError: If there's a connection error
-            TallyTimeoutError: If the request times out
 
         Example:
             ```python
