@@ -10,16 +10,6 @@ Unofficial Python SDK for the [Tally.so](https://tally.so) API.
 
 PyTally SDK is a Python library that provides a simple and intuitive interface to interact with the Tally.so API. It handles authentication, request/response processing, pagination, and error handling, allowing you to focus on building your application.
 
-### Features
-
-- 🔐 **Bearer Token Authentication** - Secure API key-based authentication
-- 📦 **Full Type Hints** - Complete type annotations for better IDE support
-- 🔄 **Automatic Pagination** - Built-in iterators for paginated resources
-- ⚡ **Pythonic API** - Clean, resource-based interface
-- 🛡️ **Comprehensive Error Handling** - Specific exceptions for different error types
-- 🔧 **Context Manager Support** - Automatic resource cleanup
-- 📊 **API Versioning** - Support for date-based API versioning
-
 ### What's Implemented
 
 Currently, the SDK covers the following Tally API resources:
@@ -29,6 +19,7 @@ Currently, the SDK covers the following Tally API resources:
 - ✅ **Forms** - Create, update, and manage forms and submissions
 - ✅ **Workspaces** - List and manage workspaces
 - ✅ **Webhooks** - Configure and monitor webhook integrations
+- 🚧 **MCP** - I'm thinking the best way to do that. Comming soon.
 
 !!! info "Official API Documentation"
     For complete API details and specifications, refer to the [Official Tally API Documentation](https://developers.tally.so/api-reference/introduction).
