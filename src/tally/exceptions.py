@@ -20,9 +20,32 @@ class TallyAPIError(TallyError):
         message: str,
         status_code: int,
         response: dict[str, Any] | None = None,
+        error_type: str | None = None,
+        errors: list[dict[str, Any]] | None = None,
     ) -> None:
         super().__init__(message, status_code)
         self.response = response
+        self.error_type = error_type
+        self.errors = errors or []
+
+    def __str__(self) -> str:
+        """Return a formatted error message."""
+        parts = [self.message]
+
+        if self.error_type:
+            parts.append(f"Error Type: {self.error_type}")
+
+        if self.errors:
+            parts.append("Details:")
+            for error in self.errors:
+                error_type = error.get("errorType", "UNKNOWN")
+                error_msg = error.get("msg", "No message provided")
+                parts.append(f"  - [{error_type}] {error_msg}")
+
+        if self.status_code:
+            parts.append(f"Status Code: {self.status_code}")
+
+        return "\n".join(parts)
 
 
 class BadRequestError(TallyAPIError):

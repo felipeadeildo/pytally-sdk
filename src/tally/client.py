@@ -14,7 +14,7 @@ from tally.exceptions import (
     TallyTimeoutError,
     UnauthorizedError,
 )
-from tally.resources import UsersResource
+from tally.resources import OrganizationsResource, UsersResource
 
 
 class TallyClient:
@@ -52,6 +52,7 @@ class TallyClient:
 
         # Initialize resources
         self.users = UsersResource(self)
+        self.organizations = OrganizationsResource(self)
 
     def _get_headers(self) -> dict[str, str]:
         """Get default headers for API requests."""
@@ -67,7 +68,20 @@ class TallyClient:
 
     def _handle_error(self, response: httpx.Response) -> None:
         """Handle HTTP error responses."""
-        message = response.text or f"HTTP {response.status_code}"
+        # Try to parse JSON error response
+        error_data = None
+        message = None
+        error_type = None
+        errors = None
+
+        try:
+            error_data = response.json()
+            message = error_data.get("message", response.text)
+            error_type = error_data.get("errorType")
+            errors = error_data.get("errors", [])
+        except Exception:
+            # If JSON parsing fails, use raw text
+            message = response.text or f"HTTP {response.status_code}"
 
         error_map = {
             400: BadRequestError,
@@ -79,7 +93,13 @@ class TallyClient:
         }
 
         error_class = error_map.get(response.status_code, ServerError)
-        raise error_class(message, response.status_code, None)
+        raise error_class(
+            message=message,
+            status_code=response.status_code,
+            response=error_data,
+            error_type=error_type,
+            errors=errors,
+        )
 
     def request(
         self,
@@ -88,7 +108,7 @@ class TallyClient:
         *,
         params: dict[str, Any] | None = None,
         json: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
+    ) -> Any:
         """Make a request to the Tally API.
 
         Args:
@@ -98,7 +118,7 @@ class TallyClient:
             json: Optional JSON body
 
         Returns:
-            Response data as dictionary
+            Response data (dictionary, list, or None for 204 responses)
 
         Raises:
             TallyAPIError: If the API returns an error
@@ -115,6 +135,10 @@ class TallyClient:
 
             if response.status_code >= 400:
                 self._handle_error(response)
+
+            # Handle 204 No Content responses
+            if response.status_code == 204:
+                return None
 
             return response.json()
 

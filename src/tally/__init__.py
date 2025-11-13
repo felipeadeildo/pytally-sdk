@@ -14,7 +14,7 @@ from tally.exceptions import (
     UnauthorizedError,
 )
 from tally.models import SubscriptionPlan, User
-from tally.resources import UsersResource
+from tally.resources import OrganizationsResource, UsersResource
 
 __version__ = "0.1.0"
 
@@ -26,6 +26,7 @@ __all__ = [
     "Tally",
     "TallyClient",
     # Resources
+    "OrganizationsResource",
     "UsersResource",
     # Models
     "User",

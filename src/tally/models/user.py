@@ -28,7 +28,7 @@ class User:
     has_two_factor_enabled: bool
     created_at: datetime
     updated_at: datetime
-    subscription_plan: SubscriptionPlan
+    subscription_plan: SubscriptionPlan | None = None
 
     @classmethod
     def from_dict(cls, data: dict) -> "User":
@@ -45,5 +45,7 @@ class User:
             has_two_factor_enabled=data["hasTwoFactorEnabled"],
             created_at=datetime.fromisoformat(data["createdAt"].replace("Z", "+00:00")),
             updated_at=datetime.fromisoformat(data["updatedAt"].replace("Z", "+00:00")),
-            subscription_plan=SubscriptionPlan(data["subscriptionPlan"]),
+            subscription_plan=SubscriptionPlan(data["subscriptionPlan"])
+            if "subscriptionPlan" in data
+            else None,
         )
