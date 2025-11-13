@@ -251,11 +251,6 @@ class FormsResource:
         Returns:
             Form object with the updated form details
 
-        Raises:
-            NotFoundError: If the form doesn't exist or you don't have access
-            BadRequestError: If the request parameters are invalid
-            UnauthorizedError: If authentication credentials are invalid
-
         Example:
             ```python
             from tally import Tally
@@ -296,10 +291,6 @@ class FormsResource:
                     "saveForLater": True
                 }
             )
-
-            print(f"Updated form: {form.name}")
-            print(f"Status: {form.status.value}")
-            print(f"Updated at: {form.updated_at}")
             ```
         """
         body: dict[str, Any] = {}
@@ -323,6 +314,26 @@ class FormsResource:
 
         data = self._client.request("PATCH", f"/forms/{form_id}", json=body)
         return Form.from_dict(data)
+
+    def delete(self, form_id: str) -> None:
+        """Delete a form by its ID.
+
+        Deletes a form and moves it to the trash. This operation is reversible
+        from the Tally web interface.
+
+        Args:
+            form_id: The ID of the form to delete
+
+        Example:
+            ```python
+            from tally import Tally
+
+            client = Tally(api_key="tly-xxxx")
+
+            client.forms.delete("form_abc123")
+            ```
+        """
+        self._client.request("DELETE", f"/forms/{form_id}")
 
     def __iter__(self) -> Iterator[Form]:
         """Iterate through all forms across all pages.
