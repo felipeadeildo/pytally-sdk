@@ -14,7 +14,7 @@ from tally.exceptions import (
     TallyTimeoutError,
     UnauthorizedError,
 )
-from tally.resources import OrganizationsResource, UsersResource
+from tally.resources import OrganizationsResource, UsersResource, WorkspacesResource
 
 
 class TallyClient:
@@ -53,6 +53,7 @@ class TallyClient:
         # Initialize resources
         self.users = UsersResource(self)
         self.organizations = OrganizationsResource(self)
+        self.workspaces = WorkspacesResource(self)
 
     def _get_headers(self) -> dict[str, str]:
         """Get default headers for API requests."""

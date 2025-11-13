@@ -13,8 +13,19 @@ from tally.exceptions import (
     TallyTimeoutError,
     UnauthorizedError,
 )
-from tally.models import Invite, SubscriptionPlan, User
-from tally.resources import OrganizationsResource, UsersResource
+from tally.models import (
+    Invite,
+    PaginatedWorkspaces,
+    SubscriptionPlan,
+    User,
+    Workspace,
+    WorkspaceInvite,
+)
+from tally.resources import (
+    OrganizationsResource,
+    UsersResource,
+    WorkspacesResource,
+)
 
 __version__ = "0.1.0"
 
@@ -28,9 +39,13 @@ __all__ = [
     # Resources
     "OrganizationsResource",
     "UsersResource",
+    "WorkspacesResource",
     # Models
     "Invite",
+    "PaginatedWorkspaces",
     "User",
+    "Workspace",
+    "WorkspaceInvite",
     "SubscriptionPlan",
     # Exceptions
     "TallyError",
