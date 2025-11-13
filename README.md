@@ -16,12 +16,13 @@ It provides a clean, Pythonic interface for authenticating, querying, and managi
 
 ### Implemented Resources
 
-[x] Users
-[x] Organizations
-[x] Forms
-[x] Workspaces
-[x] Webhooks
-[] MCP
+- [x] Users
+- [x] Organizations
+- [x] Forms
+- [x] Workspaces
+- [x] Webhooks
+- [ ] MCP
+
 ---
 
 ## Installation
