@@ -13,7 +13,7 @@ from tally.exceptions import (
     TallyTimeoutError,
     UnauthorizedError,
 )
-from tally.models import SubscriptionPlan, User
+from tally.models import Invite, SubscriptionPlan, User
 from tally.resources import OrganizationsResource, UsersResource
 
 __version__ = "0.1.0"
@@ -29,6 +29,7 @@ __all__ = [
     "OrganizationsResource",
     "UsersResource",
     # Models
+    "Invite",
     "User",
     "SubscriptionPlan",
     # Exceptions
