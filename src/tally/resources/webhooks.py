@@ -329,3 +329,33 @@ class WebhooksResource:
             "GET", f"/webhooks/{webhook_id}/events", params=params
         )
         return PaginatedWebhookEvents.from_dict(data)
+
+    def retry_event(self, webhook_id: str, event_id: str) -> None:
+        """Retry sending a failed webhook event.
+
+        Retries sending a failed webhook event. This will attempt to deliver the
+        webhook payload again to the configured endpoint.
+
+        Note: Failed webhook events are automatically retried up to 5 times with
+        exponential backoff intervals (5 minutes, 30 minutes, 1 hour, 6 hours, 24 hours)
+        before being permanently dropped.
+
+        Args:
+            webhook_id: The ID of the webhook
+            event_id: The ID of the webhook event to retry
+
+        Raises:
+            NotFoundError: If the webhook or event is not found
+
+        Example:
+            ```python
+            from tally import Tally
+
+            client = Tally(api_key="tly-xxxx")
+
+            # Retry a failed event
+            client.webhooks.retry_event("wh_123", "evt_456")
+            print("Event retry initiated successfully")
+            ```
+        """
+        self._client.request("POST", f"/webhooks/{webhook_id}/events/{event_id}")
