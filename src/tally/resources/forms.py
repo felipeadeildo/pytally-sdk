@@ -228,6 +228,102 @@ class FormsResource:
         data = self._client.request("POST", "/forms", json=body)
         return FormCreated.from_dict(data)
 
+    def update(
+        self,
+        form_id: str,
+        name: str | None = None,
+        status: FormStatus | str | None = None,
+        blocks: list[FormBlock] | list[dict[str, Any]] | None = None,
+        settings: FormSettings | dict[str, Any] | None = None,
+    ) -> Form:
+        """Update an existing form.
+
+        Updates one or more properties of an existing form. All parameters except
+        form_id are optional - only provide the fields you want to update.
+
+        Args:
+            form_id: The ID of the form to update
+            name: New name for the form (optional)
+            status: New status for the form (BLANK, DRAFT, PUBLISHED, DELETED) (optional)
+            blocks: Updated array of form blocks (optional)
+            settings: Updated form settings (optional)
+
+        Returns:
+            Form object with the updated form details
+
+        Raises:
+            NotFoundError: If the form doesn't exist or you don't have access
+            BadRequestError: If the request parameters are invalid
+            UnauthorizedError: If authentication credentials are invalid
+
+        Example:
+            ```python
+            from tally import Tally
+            from tally.models import FormStatus, FormSettings
+
+            client = Tally(api_key="tly-xxxx")
+
+            # Update form name only
+            form = client.forms.update(
+                form_id="form_abc123",
+                name="Updated Form Name"
+            )
+
+            # Update status to published
+            form = client.forms.update(
+                form_id="form_abc123",
+                status=FormStatus.PUBLISHED
+            )
+
+            # Update multiple fields at once
+            form = client.forms.update(
+                form_id="form_abc123",
+                name="New Name",
+                status="PUBLISHED",
+                settings=FormSettings(
+                    is_closed=True,
+                    close_message_title="Form Closed",
+                    close_message_description="Thank you for your interest"
+                )
+            )
+
+            # Update with dict for flexibility
+            form = client.forms.update(
+                form_id="form_abc123",
+                settings={
+                    "isClosed": False,
+                    "hasProgressBar": True,
+                    "saveForLater": True
+                }
+            )
+
+            print(f"Updated form: {form.name}")
+            print(f"Status: {form.status.value}")
+            print(f"Updated at: {form.updated_at}")
+            ```
+        """
+        body: dict[str, Any] = {}
+
+        if name is not None:
+            body["name"] = name
+
+        if status is not None:
+            body["status"] = status.value if isinstance(status, FormStatus) else status
+
+        if blocks is not None:
+            body["blocks"] = [
+                block.to_dict() if isinstance(block, FormBlock) else block
+                for block in blocks
+            ]
+
+        if settings is not None:
+            body["settings"] = (
+                settings.to_dict() if isinstance(settings, FormSettings) else settings
+            )
+
+        data = self._client.request("PATCH", f"/forms/{form_id}", json=body)
+        return Form.from_dict(data)
+
     def __iter__(self) -> Iterator[Form]:
         """Iterate through all forms across all pages.
 
